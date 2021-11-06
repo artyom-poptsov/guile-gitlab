@@ -6,6 +6,7 @@
              (ice-9 format)
              (ice-9 textual-ports)
              (ice-9 pretty-print)
+             (ice-9 regex)
              (srfi  srfi-1)
              (srfi  srfi-26)
              (oop goops)
@@ -36,6 +37,10 @@ User options:
   --id <id>
               ID of a user that should be requested.
   --name <name>
+  --email-like <regexp>
+              Print only users whose emails are matched by the
+              regexp.  Note that currently this option does not work when
+              '--id' is used.
   --username <username>
   --search <query>
               Search for users by name, username, primary email,
@@ -81,6 +86,7 @@ Group options:
     (order-by                 (value #t))
     (sort                     (value #t))
     (name                     (value #t))
+    (email-like               (value #t))
     (username                 (value #t))
     (search                   (value #t))
     (state                    (value #t))))
@@ -108,6 +114,7 @@ Group options:
          (order-by     (option-ref options 'order-by  'undefined))
          (sort         (option-ref options 'sort      'undefined))
          (name         (option-ref options 'name      'undefined))
+         (email-like   (option-ref options 'email-like #f))
          (username     (option-ref options 'username  'undefined))
          (search       (option-ref options 'search    'undefined))
          (state        (option-ref options 'state     'undefined)))
@@ -139,9 +146,17 @@ Group options:
                                          #:order-by  order-by
                                          #:search    search
                                          #:sort      sort)))
-      (if id
-          (print result)
-          (pretty-print result))
+      (cond
+       (id
+        (print result))
+       (email-like
+        (let ((lst (vector->list result))
+              (rx  (make-regexp email-like)))
+          (pretty-print (filter (lambda (user)
+                                  (regexp-exec rx (assoc-ref user "email")))
+                                lst))))
+       (else
+        (pretty-print result)))
       (newline))))
 
 
