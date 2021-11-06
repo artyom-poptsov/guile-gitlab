@@ -32,7 +32,9 @@ User options:
               ID of a user that should be requested.
   --name <name>
   --username <username>
-  --email <email>
+  --search <query>
+              Search for users by name, username, primary email,
+              or secondary email, by using this option.
   --state <state>
 
 Group options:
@@ -74,7 +76,7 @@ Group options:
     (sort                     (value #t))
     (name                     (value #t))
     (username                 (value #t))
-    (email                    (value #t))
+    (search                   (value #t))
     (state                    (value #t))))
 
 (define (string->boolean str)
@@ -100,7 +102,7 @@ Group options:
          (sort         (option-ref options 'sort      'undefined))
          (name         (option-ref options 'name      'undefined))
          (username     (option-ref options 'username  'undefined))
-         (email        (option-ref options 'email     'undefined))
+         (search       (option-ref options 'search    'undefined))
          (state        (option-ref options 'state     'undefined)))
 
     (when (or help-needed? (< (length args) 2))
@@ -126,6 +128,7 @@ Group options:
                                                          'undefined
                                                          (string->boolean external?))
                                          #:order-by  order-by
+                                         #:search    search
                                          #:sort      sort)))
       (if id
           (print result)

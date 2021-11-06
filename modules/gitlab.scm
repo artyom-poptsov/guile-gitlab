@@ -48,6 +48,7 @@
                                (sort              'undefined)
                                (two-factor        'undefined)
                                (admins            'undefined)
+                               (search            'undefined)
                                (without-projects? 'undefined))
   (let ((query
          (make-sieved-list
@@ -61,6 +62,7 @@
            (cons-or-null 'sort sort)
            (cons-or-null 'two_factor two-factor)
            (cons-or-null 'admins admins)
+           (cons-or-null 'search search)
            (cons-or-null 'without_projects without-projects?))))
     (if id
         (client-get (gitlab-client gitlab)
