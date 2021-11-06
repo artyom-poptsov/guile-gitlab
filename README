@@ -27,10 +27,10 @@ $ gitlab-cli user list --help
 
 *** Getting the list of all users
 #+BEGIN_EXAMPLE shell
-$ gitlab-cli user --token "your-secret-gitlab-token" --server "https://gitlab.example.org"
+$ gitlab-cli user list --token "your-secret-gitlab-token" --server "https://gitlab.example.org"
 #+END_EXAMPLE
 
-You can use =ls= instead of =list=.
+HINT: You can use =ls= instead of =list=.
 
 *** Getting a user with the specific ID
 #+BEGIN_EXAMPLE shell
@@ -57,3 +57,11 @@ $ gitlab-cli user list --token "your-secret-gitlab-token" --server "https://gitl
         --limit 10 \
         --print "name,email"
 #+END_EXAMPLE
+
+*** Remove a user
+#+BEGIN_EXAMPLE shell
+$ gitlab-cli user remove --token "your-secret-gitlab-token" --server "https://gitlab.example.org" \
+        --id 12345
+#+END_EXAMPLE
+
+HINT: You can use =rm= instead of =remove=.
