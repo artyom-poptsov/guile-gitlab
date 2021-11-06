@@ -32,3 +32,8 @@ $ gitlab-cli user --token "your-secret-gitlab-token" --server "https://gitlab.ex
 #+BEGIN_EXAMPLE shell
 $ gitlab-cli user --token "your-secret-gitlab-token" --server "https://gitlab.example.org" --id 12345
 #+END_EXAMPLE
+
+*** Limit number of users
+#+BEGIN_EXAMPLE shell
+$ gitlab-cli user --token "your-secret-gitlab-token" --server "https://gitlab.example.org" --search "gmail" --limit 10
+#+END_EXAMPLE
