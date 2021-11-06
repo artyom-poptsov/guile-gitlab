@@ -1,5 +1,5 @@
-#!/usr/bin/guile-2.2 \
--L ../modules -e main -s
+#!@GUILE@ \
+-e main
 !#
 
 (use-modules (ice-9 getopt-long)
