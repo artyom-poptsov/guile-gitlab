@@ -4,6 +4,7 @@
 
 ** Requirements
    - [[https://www.gnu.org/software/guile/][GNU Guile]] 2.2
+   - [[https://github.com/aconchillo/guile-json][Guile-JSON]]
 
 ** Installation
 #+BEGIN_EXAMPLE shell
