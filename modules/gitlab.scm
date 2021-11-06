@@ -95,8 +95,7 @@
                        (else
                         (loop (get (+ page 1)
                                    (- limit (* max-page-size page)))
-                              (result (append result
-                                              (vector->list data)))
+                              (append result (vector->list data))
                               (+ page 1)))))))
               (let loop ((data   (get 1 max-page-size))
                          (result '())
