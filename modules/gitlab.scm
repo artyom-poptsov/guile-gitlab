@@ -6,7 +6,8 @@
   #:export (<gitlab>
             gitlab-token
             gitlab-client
-            gitlab-request-users))
+            gitlab-request-users
+            gitlab-request-groups))
 
 (define-class <gitlab> ()
   ;; GitLab authentication token.
@@ -69,5 +70,19 @@
                     "/api/v4/users/"
                     #:query query))))
 
+(define* (gitlab-request-groups gitlab
+                                #:key
+                                (id                #f)
+                                (owned?            'undefined))
+  (let ((query
+         (make-sieved-list
+           (cons-or-null 'owned owned?))))
+    (if id
+        (client-get (gitlab-client gitlab)
+                    (format #f "/api/v4/groups/~a" id)
+                    #:query query)
+        (client-get (gitlab-client gitlab)
+                    "/api/v4/groups/"
+                    #:query query))))
 
 ;;; gitlab.scm ends here.
