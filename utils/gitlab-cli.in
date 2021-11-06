@@ -34,6 +34,10 @@ User options:
               from the server.  By default, the command will fetch
               all the users that satisfy the requirements set by
               other options.
+  --print, -p <list-of-parameters>
+              Print only the specified parameters from this
+              comma-separated list.
+              Value example: name,email
   --id <id>
               ID of a user that should be requested.
   --name <name>
@@ -59,20 +63,23 @@ Group options:
 
 
 
-(define (print result)
-  (for-each (lambda (rec)
-              (let ((key   (car rec))
-                    (value (cdr rec)))
-                (format #t "~20a: ~a~%"
-                        key
-                        (cond
-                         ((equal? value #f)
-                          "false")
-                         ((equal? value #t)
-                          "true")
-                         (else
-                          value)))))
-            result))
+(define (print result fields)
+  (let ((fields (and fields (string-split fields #\,))))
+    (for-each (lambda (rec)
+                (let ((key   (car rec))
+                      (value (cdr rec)))
+                  (if (or (not fields)
+                          (member key fields))
+                      (format #t "~20a: ~a~%"
+                              key
+                              (cond
+                               ((equal? value #f)
+                                "false")
+                               ((equal? value #t)
+                                "true")
+                               (else
+                                value))))))
+                  result)))
 
 
 
@@ -81,6 +88,7 @@ Group options:
     (server (single-char #\s) (value #t))
     (token  (single-char #\t) (value #t))
     (limit  (single-char #\l) (value #t))
+    (print  (single-char #\p) (value #t))
     (id                       (value #t))
     (active?                  (value #t))
     (order-by                 (value #t))
@@ -108,6 +116,7 @@ Group options:
          (token        (option-ref options 'token     #f))
          ;; Optional parameters.
          (limit        (option-ref options 'limit     #f))
+         (fields       (option-ref options 'print     #f))
          (id           (option-ref options 'id        #f))
          (active?      (option-ref options 'active?   'undefined))
          (external?    (option-ref options 'external? 'undefined))
@@ -148,15 +157,28 @@ Group options:
                                          #:sort      sort)))
       (cond
        (id
-        (print result))
+        (print result fields))
        (email-like
-        (let ((lst (vector->list result))
-              (rx  (make-regexp email-like)))
-          (pretty-print (filter (lambda (user)
-                                  (regexp-exec rx (assoc-ref user "email")))
-                                lst))))
+        (let* ((lst (vector->list result))
+               (rx  (make-regexp email-like))
+               (filtered-lst (filter (lambda (user)
+                                       (regexp-exec rx (assoc-ref user "email")))
+                                     lst)))
+          (if fields
+              (let ((fields (string-split fields #\,)))
+                (pretty-print (map (lambda (user)
+                                     (filter (lambda (rec) (member (car rec) fields))
+                                             user))
+                                   filtered-lst)))
+              (pretty-print filtered-lst))))
        (else
-        (pretty-print result)))
+        (if fields
+            (let ((fields (string-split fields #\,)))
+              (pretty-print (map (lambda (user)
+                                   (filter (lambda (rec) (member (car rec) fields))
+                                           user))
+                                 (vector->list result))))
+            (pretty-print (vector->list result)))))
       (newline))))
 
 
@@ -197,7 +219,7 @@ Group options:
                                                           'undefined
                                                           (string->boolean owned?)))))
       (if id
-          (print result)
+          (print result #f)
           (pretty-print result))
       (newline))))
 

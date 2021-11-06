@@ -42,3 +42,10 @@ $ gitlab-cli user --token "your-secret-gitlab-token" --server "https://gitlab.ex
 #+BEGIN_EXAMPLE shell
 $ gitlab-cli user --token "your-secret-gitlab-token" --server "https://gitlab.example.org" --email-like ".*gmail.com"
 #+END_EXAMPLE
+
+*** Print only the specified fields for each user
+#+BEGIN_EXAMPLE shell
+$ gitlab-cli user --token "your-secret-gitlab-token" --server "https://gitlab.example.org" \
+        --limit 10 \
+        --print "name,email"
+#+END_EXAMPLE
