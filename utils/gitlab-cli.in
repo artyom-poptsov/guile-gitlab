@@ -28,6 +28,11 @@ Global options:
               Set GitLab authentication token.
 
 User options:
+  --limit <limit>
+              Limit the number of users that will be requested
+              from the server.  By default, the command will fetch
+              all the users that satisfy the requirements set by
+              other options.
   --id <id>
               ID of a user that should be requested.
   --name <name>
