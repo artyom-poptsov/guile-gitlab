@@ -1,0 +1,6 @@
+# -*- mode: org; -*-
+* Guile-GitLab
+  GNU Guile interface to GitLab CE REST API.
+
+** Requirements
+   - [[https://www.gnu.org/software/guile/][GNU Guile]] 2.0.12+
