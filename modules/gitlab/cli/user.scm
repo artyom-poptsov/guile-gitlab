@@ -4,6 +4,7 @@
   #:use-module (ice-9 format)
   #:use-module (ice-9 pretty-print)
   #:use-module (ice-9 regex)
+  #:use-module (ice-9 rdelim)
   #:use-module (web uri)
   #:use-module (gitlab)
   #:use-module (gitlab cli common)
@@ -17,6 +18,7 @@ Usage: ~a user <sub-command> [arguments]
 
 Sub-commands:
   list, ls    List users in various ways.
+  remove, rm  Delete the specified user.
 
 Options:
   --limit <limit>
@@ -66,6 +68,8 @@ Options:
 
 (define (string->boolean str)
   (cond
+   ((equal? str 'undefined)
+    'undefined)
    ((string=? str "true")
     #t)
    ((string=? str "false")
@@ -147,6 +151,76 @@ Options:
 
 
 
+(define %user-remove-option-spec
+  '((help   (single-char #\h) (value #f))
+    (server (single-char #\s) (value #t))
+    (token  (single-char #\t) (value #t))
+    (id                       (value #t))
+    (force  (single-char #\f) (value #f))
+    (hard-delete?             (value #t))))
+
+(define (print-user-delete-help program-name)
+  (format #t "\
+Usage: ~a user remove [arguments]
+Usage: ~a user rm     [arguments]
+
+Required options:
+  --server, -s <server-url>
+  --token, -t <token>
+  --id <id>
+
+Other options:
+  --force, -f
+              Don't ask questions, just do it.
+  --hard-delete?
+              Delete all user's contributions.
+  --help, -h
+"
+          program-name
+          program-name))
+
+(define (gitlab-cli-user-remove program-name args)
+  (let* ((options (getopt-long (cons program-name args) %user-remove-option-spec))
+         (help-needed? (option-ref options 'help      #f))
+         ;; Required parameters.
+         (server       (option-ref options 'server    #f))
+         (token        (option-ref options 'token     #f))
+         (id           (option-ref options 'id        #f))
+         (force?       (option-ref options 'force     #f))
+         (hard-delete? (option-ref options 'hard-delete? 'undefined)))
+
+    (when help-needed?
+      (print-user-delete-help program-name)
+      (exit 0))
+
+    (unless token
+      (error "GitLab token is not provided."))
+
+    (unless server
+      (error "GitLab server URL is not provided."))
+
+    (unless id
+      (error "User ID is not provided."))
+
+    (unless force?
+      (format #t
+              "User with ID ~a is going to be deleted.  Proceed? (y/n) "
+              id)
+      (let ((response (read-line)))
+        (unless (or (string=? response "y")
+                    (string=? response "Y"))
+          (format #t "Canceling the operation~%")
+          (exit 0))))
+
+    (let ((gitlab (make <gitlab>
+                    #:endpoint server
+                    #:token    token)))
+      (gitlab-delete-user gitlab
+                          id
+                          #:hard-delete? (string->boolean hard-delete?)))))
+
+
+
 (define (gitlab-cli-user program-name args)
   (when (zero? (length args))
     (print-user-help program-name)
@@ -157,6 +231,9 @@ Options:
      ((or (string=? sub-command "list")
           (string=? sub-command "ls"))
       (gitlab-cli-user-list program-name (cdr args)))
+     ((or (string=? sub-command "remove")
+          (string=? sub-command "rm"))
+      (gitlab-cli-user-remove program-name (cdr args)))
      (else
       (print-user-help program-name)
       (exit 0)))))

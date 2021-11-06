@@ -7,7 +7,8 @@
             gitlab-token
             gitlab-client
             gitlab-request-users
-            gitlab-request-groups))
+            gitlab-request-groups
+            gitlab-delete-user))
 
 (define-class <gitlab> ()
   ;; GitLab authentication token.
@@ -30,7 +31,7 @@
   (let ((token    (constructor-argument #:token initargs))
         (endpoint (constructor-argument #:endpoint initargs)))
     (gitlab-client-set! gitlab (make <client>
-                                 #:debug? #f
+                                 #:debug? #t
                                  #:token  token
                                  #:server (string->uri endpoint)))))
 
@@ -105,6 +106,17 @@
                     (loop (get (+ page 1) max-page-size)
                           (append result (vector->list data))
                           (+ page 1)))))))))
+
+(define* (gitlab-delete-user gitlab
+                             id
+                             #:key
+                             (hard-delete?   'undefined))
+  (let ((query
+         (make-sieved-list
+          (cons-or-null 'hard_delete hard-delete?))))
+    (client-delete (gitlab-client gitlab)
+                   (format #f "/api/v4/users/~a" id)
+                   #:query query)))
 
 (define* (gitlab-request-groups gitlab
                                 #:key
