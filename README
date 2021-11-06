@@ -3,4 +3,32 @@
   GNU Guile interface to GitLab CE REST API.
 
 ** Requirements
-   - [[https://www.gnu.org/software/guile/][GNU Guile]] 2.0.12+
+   - [[https://www.gnu.org/software/guile/][GNU Guile]] 2.2
+
+** Installation
+#+BEGIN_EXAMPLE shell
+$ autoreconf -vif
+$ ./configure
+$ make
+$ sudo make install
+#+END_EXAMPLE
+
+** =gitlab-cli= tool
+   Guile-GitLab comes with the tool called =gitlab-cli= -- the tool can be used
+   to interact with a GitLab instance from the console.
+
+*** Getting help
+#+BEGIN_EXAMPLE shell
+$ gitlab-cli --help
+$ gitlab-cli user --help
+#+END_EXAMPLE
+
+*** Getting the list of all users
+#+BEGIN_EXAMPLE shell
+$ gitlab-cli user --token "your-secret-gitlab-token" --server "https://gitlab.example.org"
+#+END_EXAMPLE
+
+*** Getting a user with the specific ID
+#+BEGIN_EXAMPLE shell
+$ gitlab-cli user --token "your-secret-gitlab-token" --server "https://gitlab.example.org" --id 12345
+#+END_EXAMPLE
