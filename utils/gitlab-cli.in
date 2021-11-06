@@ -242,5 +242,11 @@ Group options:
          (print-help program-name)
          (exit 0))))))
 
-;;; gitlab-ctl.scm ends here.
+;;;
+
+;; Local Variables:
+;; mode: Scheme
+;; End:
+
+;;; gitlab-ctl.in ends here.
 
