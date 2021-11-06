@@ -22,15 +22,26 @@ Commands:
   help        Print this message and exit.
 
 Global options:
+  --server, -s <server-url>
+              URL of a GitLab instance.
   --token, -t <token>
-             Set GitLab authentication token.
+              Set GitLab authentication token.
 
 User options:
   --id <id>
+              ID of a user that should be requested.
   --name <name>
   --username <username>
   --email <email>
   --state <state>
+
+Group options:
+  --id <id>
+              ID of a group that should be requested.
+  --owned? <boolean>
+              Print only groups that are owned by the current
+              user (the owner of the token)
+              Allowed values: true, false
 "
           program-name))
 
