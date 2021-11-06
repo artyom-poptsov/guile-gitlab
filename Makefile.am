@@ -22,8 +22,7 @@ ACLOCAL_AMFLAGS = -I build-aux
 SUBDIRS = build-aux modules utils
 
 EXTRA_DIST = \
-	.dir-locals.el	\
-	TODO
+	.dir-locals.el
 
 gen-ChangeLog:
 	if test -d .git; then				\
