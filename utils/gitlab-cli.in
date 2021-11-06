@@ -103,7 +103,7 @@ Options:
     (let ((command (cadr args)))
       (cond
         ((string=? command "user")
-         (handle-user-command program-name (cdr args)))
+         (gitlab-cli-user program-name (cdr args)))
         ((string=? command "group")
          (handle-group-command program-name (cdr args)))
         (else

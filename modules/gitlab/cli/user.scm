@@ -7,7 +7,7 @@
   #:use-module (web uri)
   #:use-module (gitlab)
   #:use-module (gitlab cli common)
-  #:export (handle-user-command))
+  #:export (gitlab-cli-user))
 
 
 
@@ -70,7 +70,7 @@ Options:
    (else
     (error "Wrong boolean value (expecting 'true' or 'false')" str))))
 
-(define (handle-user-command program-name args)
+(define (gitlab-cli-user program-name args)
   (let* ((options (getopt-long args %user-option-spec))
          (help-needed? (option-ref options 'help      #f))
          ;; Required parameters.
