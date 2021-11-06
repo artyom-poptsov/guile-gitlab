@@ -19,17 +19,14 @@
 
 include $(top_srcdir)/build-aux/am/guilec
 
-SUBDIRS = cli
-
 SOURCES = \
-	common.scm	\
-	client.scm
+	user.scm
 
 GOBJECTS = $(SOURCES:%.scm=%.go)
 moddir=$(guilesitedir)/gitlab
 nobase_dist_mod_DATA = $(SOURCES)
 
-ccachedir=$(libdir)/guile/$(GUILE_EFFECTIVE_VERSION)/site-ccache/gitlab
+ccachedir=$(libdir)/guile/$(GUILE_EFFECTIVE_VERSION)/site-ccache/gitlab/cli/
 nobase_nodist_ccache_DATA = $(GOBJECTS)
 
 # Make sure source files are installed first, so that the mtime of

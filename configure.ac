@@ -21,7 +21,7 @@ You should have received a copy of the GNU General Public License
 along with Guile-GitLab.  If not, see <http://www.gnu.org/licenses/>.
 ]])
 
-AC_INIT([Guile-GitLab], [0.4.0], [poptsov.artyom@gmail.com],
+AC_INIT([Guile-GitLab], [0.1.0], [poptsov.artyom@gmail.com],
                      [guile-gitlab],
                      [https://github.com/artyom-poptsov/guile-gitlab])
 
@@ -62,6 +62,7 @@ AC_CONFIG_FILES([
         build-aux/m4/Makefile
         modules/Makefile
         modules/gitlab/Makefile
+        modules/gitlab/cli/Makefile
         utils/Makefile
 ])
 
