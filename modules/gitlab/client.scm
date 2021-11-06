@@ -12,6 +12,7 @@
             client-get
             client-put
             client-post
+            client-delete
             uri-parameters->string
             client-debug?))
 
@@ -121,6 +122,22 @@
                                (Private-Token . ,(client-token client)))
                    #:port    (open-socket-for-uri uri)
                    #:body    json-body)
+      (when (client-debug? client)
+        (display response)
+        (newline))
+      (json-string->scm (bytevector->string response-body "UTF-8")))))
+
+(define* (client-delete client resource body
+                        #:key
+                        (query '()))
+  (let ((uri       (client-build-uri client resource query))
+        (json-body (scm->json-string body)))
+    (receive (response response-body)
+        (http-delete uri
+                     #:headers `((Content-Type  . "application/json")
+                                 (Private-Token . ,(client-token client)))
+                     #:port    (open-socket-for-uri uri)
+                     #:body    json-body)
       (when (client-debug? client)
         (display response)
         (newline))
