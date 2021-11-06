@@ -22,13 +22,20 @@ Commands:
   group       Operations on GitLab groups.
   help        Print this message and exit.
 
-Global options:
+Global options that are available for all commands:
   --server, -s <server-url>
               URL of a GitLab instance.
   --token, -t <token>
               Set GitLab authentication token.
+  --help, -h  Print help message for the specific command.
+"
+          program-name))
 
-User options:
+(define (print-user-help program-name)
+  (format #t "\
+Usage: ~a user [arguments]
+
+Options:
   --limit <limit>
               Limit the number of users that will be requested
               from the server.  By default, the command will fetch
@@ -54,8 +61,14 @@ User options:
               Search for users by name, username, primary email,
               or secondary email, by using this option.
   --state <state>
+"
+          program-name))
 
-Group options:
+(define (print-group-help program-name)
+  (format #t "\
+Usage: ~a group [arguments]
+
+Options:
   --id <id>
               ID of a group that should be requested.
   --owned? <boolean>
@@ -144,7 +157,7 @@ Group options:
          (state        (option-ref options 'state     'undefined)))
 
     (when (or help-needed? (< (length args) 2))
-      (print-help program-name)
+      (print-user-help program-name)
       (exit 0))
 
     (unless token
@@ -214,7 +227,7 @@ Group options:
          (owned?       (option-ref options 'owned?    'undefined)))
 
     (when (or help-needed? (< (length args) 2))
-      (print-help program-name)
+      (print-group-help program-name)
       (exit 0))
 
     (unless token
