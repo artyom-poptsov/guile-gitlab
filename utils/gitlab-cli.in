@@ -70,6 +70,7 @@ Group options:
   '((help   (single-char #\h) (value #f))
     (server (single-char #\s) (value #t))
     (token  (single-char #\t) (value #t))
+    (limit  (single-char #\l) (value #t))
     (id                       (value #t))
     (active?                  (value #t))
     (order-by                 (value #t))
@@ -95,6 +96,7 @@ Group options:
          (server       (option-ref options 'server    #f))
          (token        (option-ref options 'token     #f))
          ;; Optional parameters.
+         (limit        (option-ref options 'limit     #f))
          (id           (option-ref options 'id        #f))
          (active?      (option-ref options 'active?   'undefined))
          (external?    (option-ref options 'external? 'undefined))
@@ -119,6 +121,8 @@ Group options:
                      #:endpoint server
                      #:token    token))
            (result (gitlab-request-users gitlab
+                                         #:limit     (and limit
+                                                          (string->number limit))
                                          #:id        id
                                          #:username  username
                                          #:active?   (if (equal? active? 'undefined)
