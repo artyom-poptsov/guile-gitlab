@@ -12,6 +12,7 @@
              (oop goops)
              (web uri)
              (gitlab)
+             (gitlab cli common)
              (gitlab cli user))
 
 
