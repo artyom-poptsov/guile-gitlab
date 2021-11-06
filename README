@@ -37,3 +37,8 @@ $ gitlab-cli user --token "your-secret-gitlab-token" --server "https://gitlab.ex
 #+BEGIN_EXAMPLE shell
 $ gitlab-cli user --token "your-secret-gitlab-token" --server "https://gitlab.example.org" --search "gmail" --limit 10
 #+END_EXAMPLE
+
+*** Use regular expressions to match user emails
+#+BEGIN_EXAMPLE shell
+$ gitlab-cli user --token "your-secret-gitlab-token" --server "https://gitlab.example.org" --email-like ".*gmail.com"
+#+END_EXAMPLE
