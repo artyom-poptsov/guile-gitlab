@@ -21,7 +21,8 @@ include $(top_srcdir)/build-aux/am/guilec
 
 SOURCES = \
 	common.scm \
-	user.scm
+	user.scm	\
+	group.scm
 
 GOBJECTS = $(SOURCES:%.scm=%.go)
 moddir=$(guilesitedir)/gitlab

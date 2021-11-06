@@ -13,7 +13,8 @@
              (web uri)
              (gitlab)
              (gitlab cli common)
-             (gitlab cli user))
+             (gitlab cli user)
+             (gitlab cli group))
 
 
 
@@ -35,62 +36,6 @@ Global options that are available for all commands:
 "
           program-name))
 
-(define (print-group-help program-name)
-  (format #t "\
-Usage: ~a group [arguments]
-
-Options:
-  --id <id>
-              ID of a group that should be requested.
-  --owned? <boolean>
-              Print only groups that are owned by the current
-              user (the owner of the token)
-              Allowed values: true, false
-"
-          program-name))
-
-
-
-(define %group-option-spec
-  '((help   (single-char #\h) (value #f))
-    (server (single-char #\s) (value #t))
-    (token  (single-char #\t) (value #t))
-    (id                       (value #t))
-    (owned?                   (value #t))))
-
-(define (handle-group-command program-name args)
-  (let* ((options (getopt-long args %group-option-spec))
-         (help-needed? (option-ref options 'help      #f))
-         ;; Required parameters.
-         (server       (option-ref options 'server    #f))
-         (token        (option-ref options 'token     #f))
-         ;; Optional parameters.
-         (id           (option-ref options 'id        #f))
-         (owned?       (option-ref options 'owned?    'undefined)))
-
-    (when (or help-needed? (< (length args) 2))
-      (print-group-help program-name)
-      (exit 0))
-
-    (unless token
-      (error "GitLab token is not provided."))
-
-    (unless server
-      (error "GitLab server URL is not provided."))
-
-    (let* ((gitlab (make <gitlab>
-                     #:endpoint server
-                     #:token    token))
-           (result (gitlab-request-groups gitlab
-                                          #:id        id
-                                          #:owned?    (if (equal? owned? 'undefined)
-                                                          'undefined
-                                                          (string->boolean owned?)))))
-      (if id
-          (print result #f)
-          (pretty-print result))
-      (newline))))
-
 
 
 (define (main args)
@@ -105,7 +50,7 @@ Options:
         ((string=? command "user")
          (gitlab-cli-user program-name (cdr args)))
         ((string=? command "group")
-         (handle-group-command program-name (cdr args)))
+         (gitlab-cli-group program-name (cdr args)))
         (else
          (print-help program-name)
          (exit 0))))))
