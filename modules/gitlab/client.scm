@@ -127,20 +127,20 @@
         (newline))
       (json-string->scm (bytevector->string response-body "UTF-8")))))
 
-(define* (client-delete client resource body
+(define* (client-delete client resource
                         #:key
                         (query '()))
-  (let ((uri       (client-build-uri client resource query))
-        (json-body (scm->json-string body)))
+  (let ((uri (client-build-uri client resource query)))
     (receive (response response-body)
         (http-delete uri
                      #:headers `((Content-Type  . "application/json")
                                  (Private-Token . ,(client-token client)))
-                     #:port    (open-socket-for-uri uri)
-                     #:body    json-body)
+                     #:port    (open-socket-for-uri uri))
       (when (client-debug? client)
         (display response)
         (newline))
-      (json-string->scm (bytevector->string response-body "UTF-8")))))
+      ;; TODO: Handle the result.
+      #t)))
+      ;; (json-string->scm (bytevector->string response-body "UTF-8")))))
 
 ;;; client.scm ends here.
