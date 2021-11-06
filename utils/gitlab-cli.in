@@ -48,7 +48,7 @@ Global options that are available for all commands:
     (let ((command (cadr args)))
       (cond
         ((string=? command "user")
-         (gitlab-cli-user program-name (cdr args)))
+         (gitlab-cli-user program-name (cddr args)))
         ((string=? command "group")
          (gitlab-cli-group program-name (cdr args)))
         (else

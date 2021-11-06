@@ -13,7 +13,10 @@
 
 (define (print-user-help program-name)
   (format #t "\
-Usage: ~a user [arguments]
+Usage: ~a user <sub-command> [arguments]
+
+Sub-commands:
+  list, ls    List users in various ways.
 
 Options:
   --limit <limit>
@@ -70,8 +73,8 @@ Options:
    (else
     (error "Wrong boolean value (expecting 'true' or 'false')" str))))
 
-(define (gitlab-cli-user program-name args)
-  (let* ((options (getopt-long args %user-option-spec))
+(define (gitlab-cli-user-list program-name args)
+  (let* ((options (getopt-long (cons program-name args) %user-option-spec))
          (help-needed? (option-ref options 'help      #f))
          ;; Required parameters.
          (server       (option-ref options 'server    #f))
@@ -141,6 +144,22 @@ Options:
           (print-many filtered-lst fields)))
        (else
         (print-many (vector->list result) fields))))))
+
+
+
+(define (gitlab-cli-user program-name args)
+  (when (zero? (length args))
+    (print-user-help program-name)
+    (exit 0))
+
+  (let ((sub-command (car args)))
+    (cond
+     ((or (string=? sub-command "list")
+          (string=? sub-command "ls"))
+      (gitlab-cli-user-list program-name (cdr args)))
+     (else
+      (print-user-help program-name)
+      (exit 0)))))
 
 ;;; user.scm ends here.
 

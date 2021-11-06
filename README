@@ -22,6 +22,7 @@ $ sudo make install
 #+BEGIN_EXAMPLE shell
 $ gitlab-cli --help
 $ gitlab-cli user --help
+$ gitlab-cli user list --help
 #+END_EXAMPLE
 
 *** Getting the list of all users
@@ -29,24 +30,30 @@ $ gitlab-cli user --help
 $ gitlab-cli user --token "your-secret-gitlab-token" --server "https://gitlab.example.org"
 #+END_EXAMPLE
 
+You can use =ls= instead of =list=.
+
 *** Getting a user with the specific ID
 #+BEGIN_EXAMPLE shell
-$ gitlab-cli user --token "your-secret-gitlab-token" --server "https://gitlab.example.org" --id 12345
+$ gitlab-cli user list --token "your-secret-gitlab-token" --server "https://gitlab.example.org" \
+        --id 12345
 #+END_EXAMPLE
 
 *** Limit number of users
 #+BEGIN_EXAMPLE shell
-$ gitlab-cli user --token "your-secret-gitlab-token" --server "https://gitlab.example.org" --search "gmail" --limit 10
+$ gitlab-cli user list --token "your-secret-gitlab-token" --server "https://gitlab.example.org" \
+        --search "gmail" \
+        --limit 10
 #+END_EXAMPLE
 
 *** Use regular expressions to match user emails
 #+BEGIN_EXAMPLE shell
-$ gitlab-cli user --token "your-secret-gitlab-token" --server "https://gitlab.example.org" --email-like ".*gmail.com"
+$ gitlab-cli user list --token "your-secret-gitlab-token" --server "https://gitlab.example.org" \
+        --email-like ".*gmail.com"
 #+END_EXAMPLE
 
 *** Print only the specified fields for each user
 #+BEGIN_EXAMPLE shell
-$ gitlab-cli user --token "your-secret-gitlab-token" --server "https://gitlab.example.org" \
+$ gitlab-cli user list --token "your-secret-gitlab-token" --server "https://gitlab.example.org" \
         --limit 10 \
         --print "name,email"
 #+END_EXAMPLE
