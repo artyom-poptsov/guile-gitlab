@@ -36,6 +36,10 @@ Global options that are available for all commands:
 "
           program-name))
 
+(define %commands
+  `((("user")          ,gitlab-cli-user)
+    (("group")         ,gitlab-cli-group)))
+
 
 
 (define (main args)
@@ -45,15 +49,13 @@ Global options that are available for all commands:
       (print-help program-name)
       (exit 0))
 
-    (let ((command (cadr args)))
-      (cond
-        ((string=? command "user")
-         (gitlab-cli-user program-name (cddr args)))
-        ((string=? command "group")
-         (gitlab-cli-group program-name (cdr args)))
-        (else
-         (print-help program-name)
-         (exit 0))))))
+    (let* ((command (cadr args))
+           (handler (command-match command %commands)))
+      (if handler
+          (handler program-name (cddr args))
+          (begin
+            (print-help program-name)
+            (exit 0))))))
 
 ;;;
 

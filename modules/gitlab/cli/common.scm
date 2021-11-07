@@ -2,7 +2,9 @@
   #:use-module (ice-9 pretty-print)
   #:export (print
             print-many
-            string->boolean))
+            string->boolean
+            string-any=?
+            command-match))
 
 
 (define (print result fields)
@@ -42,5 +44,21 @@
     #f)
    (else
     (error "Wrong boolean value (expecting 'true' or 'false')" str))))
+
+
+
+(define (string-any=? str string-list)
+  (cond
+   ((null? string-list)
+    #f)
+   ((string=? str (car string-list))
+    #t)
+   (else
+    (string-any=? str (cdr string-list)))))
+
+(define (command-match command command-list)
+  (if (string-any=? command (caar command-list))
+      (cadar command-list)
+      (command-match command (cdr command-list))))
 
 ;;; common.scm ends here.

@@ -35,7 +35,7 @@ Options:
     (owned?                   (value #t))))
 
 (define (gitlab-cli-group program-name args)
-  (let* ((options (getopt-long args %group-option-spec))
+  (let* ((options (getopt-long (cons program-name args) %group-option-spec))
          (help-needed? (option-ref options 'help      #f))
          ;; Required parameters.
          (server       (option-ref options 'server    #f))
