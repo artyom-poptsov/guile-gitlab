@@ -157,7 +157,7 @@ Options:
     (token  (single-char #\t) (value #t))
     (id                       (value #t))
     (force  (single-char #\f) (value #f))
-    (hard-delete?             (value #t))))
+    (hard-delete              (value #f))))
 
 (define (print-user-delete-help program-name)
   (format #t "\
@@ -187,7 +187,7 @@ Other options:
          (token        (option-ref options 'token     #f))
          (id           (option-ref options 'id        #f))
          (force?       (option-ref options 'force     #f))
-         (hard-delete? (option-ref options 'hard-delete? 'undefined)))
+         (hard-delete? (option-ref options 'hard-delete #f)))
 
     (when help-needed?
       (print-user-delete-help program-name)
@@ -217,7 +217,9 @@ Other options:
                     #:token    token)))
       (gitlab-delete-user gitlab
                           id
-                          #:hard-delete? (string->boolean hard-delete?)))))
+                          #:hard-delete? (if (equal? hard-delete? #f)
+                                             'undefined
+                                             "true")))))
 
 
 
