@@ -223,22 +223,22 @@ Other options:
 
 
 
+(define %commands
+  `((("list" "ls")        ,gitlab-cli-user-list)
+    (("remove" "rm")      ,gitlab-cli-user-remove)))
+
 (define (gitlab-cli-user program-name args)
   (when (zero? (length args))
     (print-user-help program-name)
     (exit 0))
 
-  (let ((sub-command (car args)))
-    (cond
-     ((or (string=? sub-command "list")
-          (string=? sub-command "ls"))
-      (gitlab-cli-user-list program-name (cdr args)))
-     ((or (string=? sub-command "remove")
-          (string=? sub-command "rm"))
-      (gitlab-cli-user-remove program-name (cdr args)))
-     (else
-      (print-user-help program-name)
-      (exit 0)))))
+  (let* ((sub-command (car args))
+         (handler     (command-match sub-command %commands)))
+    (if handler
+        (handler program-name (cdr args))
+        (begin
+          (print-user-help program-name)
+          (exit 0)))))
 
 ;;; user.scm ends here.
 
