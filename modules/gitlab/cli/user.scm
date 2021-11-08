@@ -51,8 +51,8 @@ Options:
 
 (define %user-option-spec
   '((help   (single-char #\h) (value #f))
-    (server (single-char #\s) (value #t))
-    (token  (single-char #\t) (value #t))
+    (server (single-char #\s) (value #t) (required? #t))
+    (token  (single-char #\t) (value #t) (required? #t))
     (limit  (single-char #\l) (value #t))
     (print  (single-char #\p) (value #t))
     (id                       (value #t))
@@ -102,12 +102,6 @@ Options:
       (print-user-help program-name)
       (exit 0))
 
-    (unless token
-      (error "GitLab token is not provided."))
-
-    (unless server
-      (error "GitLab server URL is not provided."))
-
     (let* ((gitlab (make <gitlab>
                      #:endpoint server
                      #:token    token))
@@ -153,9 +147,9 @@ Options:
 
 (define %user-remove-option-spec
   '((help   (single-char #\h) (value #f))
-    (server (single-char #\s) (value #t))
-    (token  (single-char #\t) (value #t))
-    (id                       (value #t))
+    (server (single-char #\s) (value #t) (required? #t))
+    (token  (single-char #\t) (value #t) (required? #t))
+    (id                       (value #t) (required? #t))
     (force  (single-char #\f) (value #f))
     (hard-delete              (value #f))))
 
@@ -192,15 +186,6 @@ Other options:
     (when help-needed?
       (print-user-delete-help program-name)
       (exit 0))
-
-    (unless token
-      (error "GitLab token is not provided."))
-
-    (unless server
-      (error "GitLab server URL is not provided."))
-
-    (unless id
-      (error "User ID is not provided."))
 
     (unless force?
       (format #t

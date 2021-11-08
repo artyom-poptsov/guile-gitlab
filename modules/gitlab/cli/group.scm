@@ -29,8 +29,8 @@ Options:
 
 (define %group-option-spec
   '((help   (single-char #\h) (value #f))
-    (server (single-char #\s) (value #t))
-    (token  (single-char #\t) (value #t))
+    (server (single-char #\s) (value #t) (required? #t))
+    (token  (single-char #\t) (value #t) (required? #t))
     (id                       (value #t))
     (owned?                   (value #t))))
 
@@ -47,12 +47,6 @@ Options:
     (when (or help-needed? (< (length args) 2))
       (print-group-help program-name)
       (exit 0))
-
-    (unless token
-      (error "GitLab token is not provided."))
-
-    (unless server
-      (error "GitLab server URL is not provided."))
 
     (let* ((gitlab (make <gitlab>
                      #:endpoint server
