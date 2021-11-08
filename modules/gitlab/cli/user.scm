@@ -55,6 +55,7 @@ Options:
     (token  (single-char #\t) (value #t) (required? #t))
     (limit  (single-char #\l) (value #t))
     (print  (single-char #\p) (value #t))
+    (format (single-char #\f) (value #t))
     (id                       (value #t))
     (active?                  (value #t))
     (order-by                 (value #t))
@@ -86,6 +87,7 @@ Options:
          ;; Optional parameters.
          (limit        (option-ref options 'limit     #f))
          (fields       (option-ref options 'print     #f))
+         (print-format (string->symbol (option-ref options 'format    "scheme")))
          (id           (option-ref options 'id        #f))
          (active?      (option-ref options 'active?   'undefined))
          (external?    (option-ref options 'external? 'undefined))
@@ -125,23 +127,23 @@ Options:
 
       (cond
        (id
-        (print result fields))
+        (print result fields #:format print-format))
        (email-like
         (let* ((lst (vector->list result))
                (rx  (make-regexp email-like))
                (filtered-lst (filter (lambda (user)
                                        (regexp-exec rx (assoc-ref user "email")))
                                      lst)))
-          (print-many filtered-lst fields)))
+          (print-many filtered-lst fields #:format print-format)))
        (email-not-like
         (let* ((lst (vector->list result))
                (rx  (make-regexp email-not-like))
                (filtered-lst (filter (lambda (user)
                                        (not (regexp-exec rx (assoc-ref user "email"))))
                                      lst)))
-          (print-many filtered-lst fields)))
+          (print-many filtered-lst fields #:format print-format)))
        (else
-        (print-many (vector->list result) fields))))))
+        (print-many (vector->list result) fields #:format print-format))))))
 
 
 
