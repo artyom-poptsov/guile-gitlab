@@ -25,7 +25,7 @@ SOURCES = \
 	group.scm
 
 GOBJECTS = $(SOURCES:%.scm=%.go)
-moddir=$(guilesitedir)/gitlab
+moddir=$(guilesitedir)/gitlab/cli/
 nobase_dist_mod_DATA = $(SOURCES)
 
 ccachedir=$(libdir)/guile/$(GUILE_EFFECTIVE_VERSION)/site-ccache/gitlab/cli/
