@@ -6,6 +6,7 @@
   #:export (<gitlab>
             gitlab-token
             gitlab-client
+            gitlab-debug-mode?
             gitlab-request-users
             gitlab-request-groups
             gitlab-delete-user))
@@ -23,15 +24,22 @@
   ;; <client>
   (client
    #:setter gitlab-client-set!
-   #:getter gitlab-client))
+   #:getter gitlab-client)
+
+  ;; <boolean>
+  (debug-mode?
+   #:init-value   #f
+   #:init-keyword #:debug-mode?
+   #:getter       gitlab-debug-mode?))
 
 
 (define-method (initialize (gitlab <gitlab>) initargs)
   (next-method)
-  (let ((token    (constructor-argument #:token initargs))
-        (endpoint (constructor-argument #:endpoint initargs)))
+  (let ((token       (constructor-argument #:token initargs))
+        (endpoint    (constructor-argument #:endpoint initargs))
+        (debug-mode? (constructor-argument #:debug-mode? initargs)))
     (gitlab-client-set! gitlab (make <client>
-                                 #:debug? #f
+                                 #:debug? debug-mode?
                                  #:token  token
                                  #:server (string->uri endpoint)))))
 
@@ -84,7 +92,8 @@
                     (let loop ((data   (get 2 (- limit max-page-size)))
                                (result (vector->list first-page))
                                (page   2))
-                      (format (current-error-port) "PAGE: ~a~%" page)
+                      (when (gitlab-debug-mode? gitlab)
+                        (format (current-error-port) "PAGE: ~a~%" page))
                       (cond
                        ((zero? (vector-length data))
                         (list->vector result))
