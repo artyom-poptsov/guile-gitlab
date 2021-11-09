@@ -24,8 +24,8 @@ Sub-commands:
 
 (define %user-option-spec
   '((help   (single-char #\h) (value #f))
-    (server (single-char #\s) (value #t) (required? #t))
-    (token  (single-char #\t) (value #t) (required? #t))
+    (server (single-char #\s) (value #t))
+    (token  (single-char #\t) (value #t))
     (limit  (single-char #\l) (value #t))
     (print  (single-char #\p) (value #t))
     (format (single-char #\f) (value #t))
@@ -116,6 +116,12 @@ Options:
       (print-user-help/list program-name)
       (exit 0))
 
+    (unless server
+      (error "'--server' option must be specified" args))
+
+    (unless token
+      (error "'--token' option must be specified" args))
+
     (let* ((gitlab (make <gitlab>
                      #:endpoint server
                      #:token    token))
@@ -161,9 +167,9 @@ Options:
 
 (define %user-remove-option-spec
   '((help   (single-char #\h) (value #f))
-    (server (single-char #\s) (value #t) (required? #t))
-    (token  (single-char #\t) (value #t) (required? #t))
-    (id                       (value #t) (required? #t))
+    (server (single-char #\s) (value #t))
+    (token  (single-char #\t) (value #t))
+    (id                       (value #t))
     (force  (single-char #\f) (value #f))
     (hard-delete              (value #f))))
 
@@ -200,6 +206,15 @@ Other options:
     (when help-needed?
       (print-user-delete-help program-name)
       (exit 0))
+
+    (unless server
+      (error "'--server' option must be specified" args))
+
+    (unless token
+      (error "'--token' option must be specified" args))
+
+    (unless id
+      (error "'--id' option must be specified" args))
 
     (unless force?
       (format #t
