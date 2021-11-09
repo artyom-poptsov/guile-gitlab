@@ -6,6 +6,7 @@
    - [[https://www.gnu.org/software/guile/][GNU Guile]] 2.2
    - [[https://github.com/aconchillo/guile-json][Guile-JSON]]
    - [[https://gnutls.org/][GnuTLS]]
+   - [[https://www.gnutls.org/manual/gnutls-guile.html][Guile-GnuTLS]]
 
 ** Installation
 #+BEGIN_EXAMPLE shell
