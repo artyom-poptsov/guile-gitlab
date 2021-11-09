@@ -31,7 +31,7 @@
   (let ((token    (constructor-argument #:token initargs))
         (endpoint (constructor-argument #:endpoint initargs)))
     (gitlab-client-set! gitlab (make <client>
-                                 #:debug? #t
+                                 #:debug? #f
                                  #:token  token
                                  #:server (string->uri endpoint)))))
 
