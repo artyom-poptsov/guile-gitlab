@@ -19,33 +19,6 @@ Usage: ~a user <sub-command> [arguments]
 Sub-commands:
   list, ls    List users in various ways.
   remove, rm  Delete the specified user.
-
-Options:
-  --limit <limit>
-              Limit the number of users that will be requested
-              from the server.  By default, the command will fetch
-              all the users that satisfy the requirements set by
-              other options.
-  --print, -p <list-of-parameters>
-              Print only the specified parameters from this
-              comma-separated list.
-              Value example: name,email
-  --id <id>
-              ID of a user that should be requested.
-  --name <name>
-  --email-like <regexp>
-              Print only users whose emails are matched by the
-              regexp.  Note that currently this option does not work when
-              '--id' is used.
-  --email-not-like <regexp>
-              Print only users whose emails are NOT matched by the
-              regexp.  Note that currently this option does not work when
-              '--id' is used.
-  --username <username>
-  --search <query>
-              Search for users by name, username, primary email,
-              or secondary email, by using this option.
-  --state <state>
 "
           program-name))
 
@@ -78,6 +51,45 @@ Options:
    (else
     (error "Wrong boolean value (expecting 'true' or 'false')" str))))
 
+
+
+(define (print-user-help/list program-name)
+  (format #t "\
+Usage: ~a user list [arguments]
+       ~a user ls   [arguments]
+
+Options:
+  --token <token>
+  --server <server>
+  --limit <limit>
+              Limit the number of users that will be requested
+              from the server.  By default, the command will fetch
+              all the users that satisfy the requirements set by
+              other options.
+  --print, -p <list-of-parameters>
+              Print only the specified parameters from this
+              comma-separated list.
+              Value example: name,email
+  --id <id>
+              ID of a user that should be requested.
+  --name <name>
+  --email-like <regexp>
+              Print only users whose emails are matched by the
+              regexp.  Note that currently this option does not work when
+              '--id' is used.
+  --email-not-like <regexp>
+              Print only users whose emails are NOT matched by the
+              regexp.  Note that currently this option does not work when
+              '--id' is used.
+  --username <username>
+  --search <query>
+              Search for users by name, username, primary email,
+              or secondary email, by using this option.
+  --state <state>
+"
+          program-name
+          program-name))
+
 (define (gitlab-cli-user-list program-name args)
   (let* ((options (getopt-long (cons program-name args) %user-option-spec))
          (help-needed? (option-ref options 'help      #f))
@@ -101,7 +113,7 @@ Options:
          (state        (option-ref options 'state     'undefined)))
 
     (when (or help-needed? (< (length args) 2))
-      (print-user-help program-name)
+      (print-user-help/list program-name)
       (exit 0))
 
     (let* ((gitlab (make <gitlab>
