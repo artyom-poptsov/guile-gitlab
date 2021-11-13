@@ -3,45 +3,14 @@
   #:use-module (web uri)
   #:use-module (gitlab common)
   #:use-module (gitlab client)
-  #:export (<gitlab>
-            gitlab-token
-            gitlab-client
-            gitlab-debug-mode?
-            gitlab-request-users
+  #:use-module (gitlab gitlab)
+  #:re-export (<gitlab>
+               gitlab-token
+               gitlab-client
+               gitlab-debug-mode?)
+  #:export (gitlab-request-users
             gitlab-request-groups
             gitlab-delete-user))
-
-(define-class <gitlab> ()
-  ;; GitLab authentication token.
-  ;;
-  ;; <string>
-  (token
-   #:init-keyword #:token
-   #:getter       gitlab-token)
-
-  ;; GitLab <client> instance.
-  ;;
-  ;; <client>
-  (client
-   #:setter gitlab-client-set!
-   #:getter gitlab-client)
-
-  ;; <boolean>
-  (debug-mode?
-   #:init-value   #f
-   #:init-keyword #:debug-mode?
-   #:getter       gitlab-debug-mode?))
-
-
-(define-method (initialize (gitlab <gitlab>) initargs)
-  (next-method)
-  (let ((token       (constructor-argument #:token initargs))
-        (endpoint    (constructor-argument #:endpoint initargs))
-        (debug-mode? (constructor-argument #:debug-mode? initargs)))
-    (gitlab-client-set! gitlab (make <client>
-                                 #:debug? debug-mode?
-                                 #:token  token
-                                 #:server (string->uri endpoint)))))
 
 
 (define* (gitlab-request-users gitlab
