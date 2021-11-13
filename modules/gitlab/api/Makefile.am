@@ -20,6 +20,7 @@
 include $(top_srcdir)/build-aux/am/guilec
 
 SOURCES = \
+	common.scm	\
 	user.scm	\
 	group.scm	\
 	project.scm	\

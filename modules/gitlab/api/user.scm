@@ -4,6 +4,7 @@
   #:use-module (gitlab common)
   #:use-module (gitlab client)
   #:use-module (gitlab session)
+  #:use-module (gitlab api common)
   #:export (gitlab-api-users-get
             gitlab-api-users-delete))
 
@@ -44,42 +45,10 @@
         (client-get (gitlab-session-client session)
                     (format #f "/api/v4/users/~a" id)
                     #:query query)
-        (let ((get (lambda (page page-size)
-                     (client-get (gitlab-session-client session)
-                                 "/api/v4/users/"
-                                 #:query (cons (cons 'per_page (number->string page-size))
-                                               (cons (cons 'page (number->string page))
-                                                     query))))))
-          (if limit
-              (let ((first-page (get 1 limit)))
-                (if (>= (vector-length first-page) limit)
-                    first-page
-                    (let loop ((data   (get 2 (- limit max-page-size)))
-                               (result (vector->list first-page))
-                               (page   2))
-                      (when (gitlab-session-debug-mode? session)
-                        (format (current-error-port) "PAGE: ~a~%" page))
-                      (cond
-                       ((zero? (vector-length data))
-                        (list->vector result))
-                       ((>= (+ (vector-length data)
-                               (length result))
-                            limit)
-                        (list->vector (append result
-                                              (vector->list data))))
-                       (else
-                        (loop (get (+ page 1)
-                                   (- limit (* max-page-size page)))
-                              (append result (vector->list data))
-                              (+ page 1)))))))
-              (let loop ((data   (get 1 max-page-size))
-                         (result '())
-                         (page   1))
-                (if (zero? (vector-length data))
-                    (list->vector result)
-                    (loop (get (+ page 1) max-page-size)
-                          (append result (vector->list data))
-                          (+ page 1)))))))))
+        (api-get session
+                 "/api/v4/users/"
+                 #:limit limit
+                 #:query query))))
 
 (define* (gitlab-api-users-delete session
                                   id
