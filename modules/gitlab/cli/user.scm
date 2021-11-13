@@ -122,10 +122,10 @@ Options:
     (unless token
       (error "'--token' option must be specified" args))
 
-    (let* ((gitlab (make <gitlab>
-                     #:endpoint server
-                     #:token    token))
-           (result (gitlab-request-users gitlab
+    (let* ((session (make <session>
+                      #:endpoint server
+                      #:token    token))
+           (result (gitlab-request-users session
                                          #:limit     (and limit
                                                           (string->number limit))
                                          #:id        id
@@ -226,10 +226,10 @@ Other options:
           (format #t "Canceling the operation~%")
           (exit 0))))
 
-    (let ((gitlab (make <gitlab>
-                    #:endpoint server
-                    #:token    token)))
-      (gitlab-delete-user gitlab
+    (let ((session (make <session>
+                     #:endpoint server
+                     #:token    token)))
+      (gitlab-delete-user session
                           id
                           #:hard-delete? (if (equal? hard-delete? #f)
                                              'undefined

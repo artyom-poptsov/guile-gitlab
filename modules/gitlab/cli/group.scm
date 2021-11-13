@@ -48,10 +48,10 @@ Options:
       (print-group-help program-name)
       (exit 0))
 
-    (let* ((gitlab (make <gitlab>
-                     #:endpoint server
-                     #:token    token))
-           (result (gitlab-request-groups gitlab
+    (let* ((session (make <session>
+                      #:endpoint server
+                      #:token    token))
+           (result (gitlab-request-groups session
                                           #:id        id
                                           #:owned?    (if (equal? owned? 'undefined)
                                                           'undefined

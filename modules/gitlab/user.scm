@@ -3,13 +3,13 @@
   #:use-module (web uri)
   #:use-module (gitlab common)
   #:use-module (gitlab client)
-  #:use-module (gitlab gitlab)
+  #:use-module (gitlab session)
   #:export (gitlab-request-users
             gitlab-delete-user))
 
 
 
-(define* (gitlab-request-users gitlab
+(define* (gitlab-request-users session
                                #:key
                                (id                #f)
                                (limit             #f)
@@ -41,11 +41,11 @@
           (cons-or-null 'search search)
           (cons-or-null 'without_projects without-projects?))))
     (if id
-        (client-get (gitlab-client gitlab)
+        (client-get (gitlab-session-client session)
                     (format #f "/api/v4/users/~a" id)
                     #:query query)
         (let ((get (lambda (page page-size)
-                     (client-get (gitlab-client gitlab)
+                     (client-get (gitlab-session-client session)
                                  "/api/v4/users/"
                                  #:query (cons (cons 'per_page (number->string page-size))
                                                (cons (cons 'page (number->string page))
@@ -57,7 +57,7 @@
                     (let loop ((data   (get 2 (- limit max-page-size)))
                                (result (vector->list first-page))
                                (page   2))
-                      (when (gitlab-debug-mode? gitlab)
+                      (when (gitlab-session-debug-mode? session)
                         (format (current-error-port) "PAGE: ~a~%" page))
                       (cond
                        ((zero? (vector-length data))
@@ -81,14 +81,14 @@
                           (append result (vector->list data))
                           (+ page 1)))))))))
 
-(define* (gitlab-delete-user gitlab
+(define* (gitlab-delete-user session
                              id
                              #:key
                              (hard-delete?   'undefined))
   (let ((query
          (make-sieved-list
           (cons-or-null 'hard_delete hard-delete?))))
-    (client-delete (gitlab-client gitlab)
+    (client-delete (gitlab-session-client session)
                    (format #f "/api/v4/users/~a" id)
                    #:query query)))
 

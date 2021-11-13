@@ -24,7 +24,7 @@ SUBDIRS = cli
 SOURCES = \
 	common.scm	\
 	client.scm	\
-	gitlab.scm	\
+	session.scm	\
 	user.scm
 
 GOBJECTS = $(SOURCES:%.scm=%.go)

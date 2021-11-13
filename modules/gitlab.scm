@@ -3,19 +3,19 @@
   #:use-module (web uri)
   #:use-module (gitlab common)
   #:use-module (gitlab client)
-  #:use-module (gitlab gitlab)
+  #:use-module (gitlab session)
   #:use-module (gitlab user)
-  #:re-export (<gitlab>
-               gitlab-token
-               gitlab-client
-               gitlab-debug-mode?
+  #:re-export (<session>
+               gitlab-session-token
+               gitlab-session-client
+               gitlab-session-debug-mode?
                gitlab-request-users
                gitlab-delete-user)
   #:export (gitlab-request-groups))
 
 
 
-(define* (gitlab-request-groups gitlab
+(define* (gitlab-request-groups session
                                 #:key
                                 (id                #f)
                                 (owned?            'undefined))
@@ -23,10 +23,10 @@
          (make-sieved-list
            (cons-or-null 'owned owned?))))
     (if id
-        (client-get (gitlab-client gitlab)
+        (client-get (gitlab-session-client session)
                     (format #f "/api/v4/groups/~a" id)
                     #:query query)
-        (client-get (gitlab-client gitlab)
+        (client-get (gitlab-session-client session)
                     "/api/v4/groups/"
                     #:query query))))
 
