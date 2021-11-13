@@ -6,12 +6,14 @@
   #:use-module (gitlab session)
   #:use-module (gitlab api user)
   #:use-module (gitlab api group)
+  #:use-module (gitlab api version)
   #:re-export (<session>
                gitlab-session-token
                gitlab-session-client
                gitlab-session-debug-mode?
                gitlab-api-users-get
                gitlab-api-users-delete
-               gitlab-api-groups-get))
+               gitlab-api-groups-get
+               gitlab-api-version-get))
 
 ;;; gitlab.scm ends here.
