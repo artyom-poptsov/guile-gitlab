@@ -22,6 +22,7 @@ include $(top_srcdir)/build-aux/am/guilec
 SOURCES = \
 	user.scm	\
 	group.scm	\
+	project.scm	\
 	version.scm
 
 GOBJECTS = $(SOURCES:%.scm=%.go)
