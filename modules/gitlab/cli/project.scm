@@ -18,6 +18,11 @@ Usage: ~a project [arguments]
 Options:
   --id <id>
               ID of a project that should be requested.
+  --limit <limit>
+              Limit the number of projects that will be requested
+              from the server.  By default, the command will fetch
+              all the projects that satisfy the requirements set by
+              other options.
   --owned? <boolean>
               Print only projects that are owned by the current
               user (the owner of the token)
@@ -31,6 +36,7 @@ Options:
   '((help         (single-char #\h) (value #f))
     (server       (single-char #\s) (value #t))
     (token        (single-char #\t) (value #t))
+    (limit        (single-char #\l) (value #t))
     (id                             (value #t))
     (owned?                         (value #t))))
 
@@ -42,6 +48,7 @@ Options:
          (token        (option-ref options 'token     #f))
          ;; Optional parameters.
          (id           (option-ref options 'id        #f))
+         (limit        (option-ref options 'limit     #f))
          (owned?       (option-ref options 'owned?    'undefined)))
 
     (when (or help-needed? (< (length args) 2))
@@ -59,6 +66,8 @@ Options:
                       #:token    token))
            (result (gitlab-api-projects-get session
                                             #:id        id
+                                            #:limit     (and limit
+                                                             (string->number limit))
                                             #:owned?    (if (equal? owned? 'undefined)
                                                             'undefined
                                                             (string->boolean owned?)))))
