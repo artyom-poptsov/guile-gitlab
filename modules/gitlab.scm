@@ -4,7 +4,7 @@
   #:use-module (gitlab common)
   #:use-module (gitlab client)
   #:use-module (gitlab session)
-  #:use-module (gitlab user)
+  #:use-module (gitlab api user)
   #:re-export (<session>
                gitlab-session-token
                gitlab-session-client

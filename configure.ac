@@ -62,6 +62,7 @@ AC_CONFIG_FILES([
         build-aux/m4/Makefile
         modules/Makefile
         modules/gitlab/Makefile
+        modules/gitlab/api/Makefile
         modules/gitlab/cli/Makefile
         utils/Makefile
 ])

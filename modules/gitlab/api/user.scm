@@ -1,4 +1,4 @@
-(define-module (gitlab user)
+(define-module (gitlab api user)
   #:use-module (oop goops)
   #:use-module (web uri)
   #:use-module (gitlab common)
