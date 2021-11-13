@@ -14,7 +14,8 @@
              (gitlab)
              (gitlab cli common)
              (gitlab cli user)
-             (gitlab cli group))
+             (gitlab cli group)
+             (gitlab cli version))
 
 
 
@@ -25,6 +26,7 @@ Usage: ~a <command> [arguments]
 Commands:
   user        Operations on GitLab users.
   group       Operations on GitLab groups.
+  version     Get GitLab instance version information.
   help        Print this message and exit.
 
 Global options that are available for all commands:
@@ -38,7 +40,8 @@ Global options that are available for all commands:
 
 (define %commands
   `((("user")          ,gitlab-cli-user)
-    (("group")         ,gitlab-cli-group)))
+    (("group")         ,gitlab-cli-group)
+    (("version")       ,gitlab-cli-version)))
 
 
 
