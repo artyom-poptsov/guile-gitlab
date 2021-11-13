@@ -4,7 +4,7 @@
   #:use-module (gitlab common)
   #:use-module (gitlab client)
   #:use-module (gitlab session)
-  #:export (gitlab-api-group-get))
+  #:export (gitlab-api-groups-get))
 
 
 
