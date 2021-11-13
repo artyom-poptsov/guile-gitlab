@@ -23,8 +23,9 @@ SUBDIRS = cli
 
 SOURCES = \
 	common.scm	\
-	client.scm
-	gitlab.scm
+	client.scm	\
+	gitlab.scm	\
+	user.scm
 
 GOBJECTS = $(SOURCES:%.scm=%.go)
 moddir=$(guilesitedir)/gitlab
