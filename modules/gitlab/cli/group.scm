@@ -51,7 +51,7 @@ Options:
     (let* ((session (make <session>
                       #:endpoint server
                       #:token    token))
-           (result (gitlab-request-groups session
+           (result (gitlab-api-groups-get session
                                           #:id        id
                                           #:owned?    (if (equal? owned? 'undefined)
                                                           'undefined

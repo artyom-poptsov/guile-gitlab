@@ -5,29 +5,13 @@
   #:use-module (gitlab client)
   #:use-module (gitlab session)
   #:use-module (gitlab api user)
+  #:use-module (gitlab api group)
   #:re-export (<session>
                gitlab-session-token
                gitlab-session-client
                gitlab-session-debug-mode?
                gitlab-api-users-get
-               gitlab-api-users-delete)
-  #:export (gitlab-request-groups))
-
-
-
-(define* (gitlab-request-groups session
-                                #:key
-                                (id                #f)
-                                (owned?            'undefined))
-  (let ((query
-         (make-sieved-list
-           (cons-or-null 'owned owned?))))
-    (if id
-        (client-get (gitlab-session-client session)
-                    (format #f "/api/v4/groups/~a" id)
-                    #:query query)
-        (client-get (gitlab-session-client session)
-                    "/api/v4/groups/"
-                    #:query query))))
+               gitlab-api-users-delete
+               gitlab-api-groups-get))
 
 ;;; gitlab.scm ends here.

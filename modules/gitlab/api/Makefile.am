@@ -20,7 +20,8 @@
 include $(top_srcdir)/build-aux/am/guilec
 
 SOURCES = \
-	user.scm
+	user.scm	\
+	group.scm
 
 GOBJECTS = $(SOURCES:%.scm=%.go)
 moddir=$(guilesitedir)/gitlab/api/
