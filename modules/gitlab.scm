@@ -9,8 +9,8 @@
                gitlab-session-token
                gitlab-session-client
                gitlab-session-debug-mode?
-               gitlab-request-users
-               gitlab-delete-user)
+               gitlab-api-users-get
+               gitlab-api-users-delete)
   #:export (gitlab-request-groups))
 
 

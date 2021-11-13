@@ -125,7 +125,7 @@ Options:
     (let* ((session (make <session>
                       #:endpoint server
                       #:token    token))
-           (result (gitlab-request-users session
+           (result (gitlab-api-users-get session
                                          #:limit     (and limit
                                                           (string->number limit))
                                          #:id        id
@@ -229,11 +229,11 @@ Other options:
     (let ((session (make <session>
                      #:endpoint server
                      #:token    token)))
-      (gitlab-delete-user session
-                          id
-                          #:hard-delete? (if (equal? hard-delete? #f)
-                                             'undefined
-                                             "true")))))
+      (gitlab-api-users-delete session
+                               id
+                               #:hard-delete? (if (equal? hard-delete? #f)
+                                                  'undefined
+                                                  "true")))))
 
 
 

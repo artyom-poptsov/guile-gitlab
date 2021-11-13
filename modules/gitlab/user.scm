@@ -4,12 +4,12 @@
   #:use-module (gitlab common)
   #:use-module (gitlab client)
   #:use-module (gitlab session)
-  #:export (gitlab-request-users
-            gitlab-delete-user))
+  #:export (gitlab-api-users-get
+            gitlab-api-users-delete))
 
 
 
-(define* (gitlab-request-users session
+(define* (gitlab-api-users-get session
                                #:key
                                (id                #f)
                                (limit             #f)
@@ -81,10 +81,10 @@
                           (append result (vector->list data))
                           (+ page 1)))))))))
 
-(define* (gitlab-delete-user session
-                             id
-                             #:key
-                             (hard-delete?   'undefined))
+(define* (gitlab-api-users-delete session
+                                  id
+                                  #:key
+                                  (hard-delete?   'undefined))
   (let ((query
          (make-sieved-list
           (cons-or-null 'hard_delete hard-delete?))))
