@@ -27,43 +27,87 @@ $ gitlab-cli user --help
 $ gitlab-cli user list --help
 #+END_EXAMPLE
 
-*** Getting the list of all users
+*** Commands
+
+**** =user=
+     
 #+BEGIN_EXAMPLE shell
-$ gitlab-cli user list --token "your-secret-gitlab-token" --server "https://gitlab.example.org"
+$ gitlab-cli user <sub-command> \
+        --token "your-secret-gitlab-token" \
+        --server "https://gitlab.example.org" \
+        <other-options>
 #+END_EXAMPLE
 
-HINT: You can use =ls= instead of =list=.
+     Sub-commands:
+     - =list=, =ls=
+     - =remove=, =rm=
 
-*** Getting a user with the specific ID
+***** Getting the list of all users
 #+BEGIN_EXAMPLE shell
-$ gitlab-cli user list --token "your-secret-gitlab-token" --server "https://gitlab.example.org" \
+$ gitlab-cli user list \
+        --token "your-secret-gitlab-token" \
+        --server "https://gitlab.example.org"
+#+END_EXAMPLE
+
+***** Getting a user with the specific ID
+#+BEGIN_EXAMPLE shell
+$ gitlab-cli user list \
+        --token "your-secret-gitlab-token" \
+        --server "https://gitlab.example.org" \
         --id 12345
 #+END_EXAMPLE
 
-*** Limit number of users
+***** Limit number of users
 #+BEGIN_EXAMPLE shell
-$ gitlab-cli user list --token "your-secret-gitlab-token" --server "https://gitlab.example.org" \
+$ gitlab-cli user list \
+        --token "your-secret-gitlab-token" \
+        --server "https://gitlab.example.org" \
         --search "gmail" \
         --limit 10
 #+END_EXAMPLE
 
-*** Use regular expressions to match user emails
+***** Use regular expressions to match user emails
 #+BEGIN_EXAMPLE shell
-$ gitlab-cli user list --token "your-secret-gitlab-token" --server "https://gitlab.example.org" \
+$ gitlab-cli user list \
+        --token "your-secret-gitlab-token" \
+        --server "https://gitlab.example.org" \
         --email-like ".*gmail.com"
 #+END_EXAMPLE
 
-*** Print only the specified fields for each user
+***** Print only the specified fields for each user
 #+BEGIN_EXAMPLE shell
-$ gitlab-cli user list --token "your-secret-gitlab-token" --server "https://gitlab.example.org" \
+$ gitlab-cli user list \
+        --token "your-secret-gitlab-token" \
+        --server "https://gitlab.example.org" \
         --limit 10 \
         --print "name,email"
 #+END_EXAMPLE
 
-*** Remove a user
+***** Remove a user
 #+BEGIN_EXAMPLE shell
-$ gitlab-cli user remove --token "your-secret-gitlab-token" --server "https://gitlab.example.org" \
+$ gitlab-cli user remove \
+        --token "your-secret-gitlab-token" \
+        --server "https://gitlab.example.org" \
         --id 12345
 #+END_EXAMPLE
 
-HINT: You can use =rm= instead of =remove=.
+**** =group=
+     Prints the list of groups to standard output by default.
+#+BEGIN_EXAMPLE shell
+$ gitlab-cli group \
+        --token "your-secret-gitlab-token" \
+        --server "https://gitlab.example.org"
+        <other-options>
+#+END_EXAMPLE
+
+     Pass =--help= option to the command to get help.
+     
+**** =project=
+#+BEGIN_EXAMPLE shell
+$ gitlab-cli project \
+        --token "your-secret-gitlab-token" \
+        --server "https://gitlab.example.org"
+        <other-options>
+#+END_EXAMPLE
+
+     Pass =--help= option to the command to get help.
