@@ -23,6 +23,7 @@ SOURCES = \
 	common.scm \
 	user.scm	\
 	group.scm	\
+	project.scm	\
 	version.scm
 
 GOBJECTS = $(SOURCES:%.scm=%.go)
