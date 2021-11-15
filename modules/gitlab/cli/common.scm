@@ -1,4 +1,5 @@
 (define-module (gitlab cli common)
+  #:use-module (ice-9 format)
   #:use-module (ice-9 pretty-print)
   #:export (print
             print-many
