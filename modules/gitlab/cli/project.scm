@@ -34,6 +34,10 @@ Options:
               from the server.  By default, the command will fetch
               all the projects that satisfy the requirements set by
               other options.
+  --print, -p <list-of-parameters>
+              Print only the specified parameters from this
+              comma-separated list.
+              Value example: name,email
   --owned? <boolean>
               Print only projects that are owned by the current
               user (the owner of the token)
@@ -49,6 +53,7 @@ Options:
     (server       (single-char #\s) (value #t))
     (token        (single-char #\t) (value #t))
     (limit        (single-char #\l) (value #t))
+    (print        (single-char #\p) (value #t))
     (id                             (value #t))
     (owned?                         (value #t))))
 
@@ -61,6 +66,7 @@ Options:
          ;; Optional parameters.
          (id           (option-ref options 'id        #f))
          (limit        (option-ref options 'limit     #f))
+         (fields       (option-ref options 'print     #f))
          (owned?       (option-ref options 'owned?    'undefined)))
 
     (when (or help-needed? (< (length args) 2))
@@ -84,8 +90,8 @@ Options:
                                                             'undefined
                                                             (string->boolean owned?)))))
       (if id
-          (print result #f)
-          (pretty-print result))
+          (print result fields)
+          (print-many (vector->list result) fields))
       (newline))))
 
 
