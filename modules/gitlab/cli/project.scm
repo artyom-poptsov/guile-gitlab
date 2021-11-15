@@ -38,6 +38,9 @@ Options:
               Print only the specified parameters from this
               comma-separated list.
               Value example: name,email
+  --format, f Output format.
+              Allowed values:
+                  \"scheme\" (default), \"csv\", \"human-readable\"
   --owned? <boolean>
               Print only projects that are owned by the current
               user (the owner of the token)
@@ -54,6 +57,7 @@ Options:
     (token        (single-char #\t) (value #t))
     (limit        (single-char #\l) (value #t))
     (print        (single-char #\p) (value #t))
+    (format       (single-char #\f) (value #t))
     (id                             (value #t))
     (owned?                         (value #t))))
 
@@ -67,6 +71,7 @@ Options:
          (id           (option-ref options 'id        #f))
          (limit        (option-ref options 'limit     #f))
          (fields       (option-ref options 'print     #f))
+         (print-format (string->symbol (option-ref options 'format    "scheme")))
          (owned?       (option-ref options 'owned?    'undefined)))
 
     (when (or help-needed? (< (length args) 2))
@@ -90,8 +95,8 @@ Options:
                                                             'undefined
                                                             (string->boolean owned?)))))
       (if id
-          (print result fields)
-          (print-many (vector->list result) fields))
+          (print result fields #:format print-format)
+          (print-many (vector->list result) fields #:format print-format))
       (newline))))
 
 
