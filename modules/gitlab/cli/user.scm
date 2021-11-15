@@ -70,6 +70,9 @@ Options:
               Print only the specified parameters from this
               comma-separated list.
               Value example: name,email
+  --format, f Output format.
+              Allowed values:
+                  \"scheme\" (default), \"csv\", \"human-readable\"
   --id <id>
               ID of a user that should be requested.
   --name <name>
