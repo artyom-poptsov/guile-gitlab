@@ -13,7 +13,18 @@
 
 (define (print-help program-name)
   (format #t "\
-Usage: ~a project [arguments]
+Usage: ~a project <sub-command> [arguments]
+
+Sub-commands:
+  list, ls    List projects in various ways.
+  help, h     Print this message.
+"
+          program-name))
+
+(define (print-list-help program-name)
+  (format #t "\
+Usage: ~a project list [arguments]
+       ~a project ls   [arguments]
 
 Options:
   --id <id>
@@ -28,6 +39,7 @@ Options:
               user (the owner of the token)
               Allowed values: true, false
 "
+          program-name
           program-name))
 
 
@@ -40,7 +52,7 @@ Options:
     (id                             (value #t))
     (owned?                         (value #t))))
 
-(define (gitlab-cli-project program-name args)
+(define (gitlab-cli-project/list program-name args)
   (let* ((options (getopt-long (cons program-name args) %option-spec))
          (help-needed? (option-ref options 'help      #f))
          ;; Required parameters.
@@ -75,5 +87,22 @@ Options:
           (print result #f)
           (pretty-print result))
       (newline))))
+
+
+(define %commands
+  `((("list" "ls")        ,gitlab-cli-project/list)
+    (("help" "h")         ,(lambda (program-name args)
+                             (print-help program-name)
+                             (exit 0)))))
+
+(define (gitlab-cli-project program-name args)
+  (when (zero? (length args))
+    (print-help program-name)
+    (exit 0))
+  (let* ((sub-command (car args))
+         (handler     (command-match sub-command %commands)))
+    (if handler
+        (handler program-name (cdr args))
+        (print-help program-name))))
 
 ;;; group.scm ends here.

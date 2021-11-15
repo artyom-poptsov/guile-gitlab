@@ -104,7 +104,7 @@ $ gitlab-cli group \
      
 **** =project=
 #+BEGIN_EXAMPLE shell
-$ gitlab-cli project \
+$ gitlab-cli project list \
         --token "your-secret-gitlab-token" \
         --server "https://gitlab.example.org"
         <other-options>
