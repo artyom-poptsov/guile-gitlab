@@ -34,9 +34,11 @@
 ;;; Code:
 
 (use-modules (guix packages)
-             (guix licenses)
+             ((guix licenses) #:prefix license:)
              (guix git-download)
              (guix build-system gnu)
+             (guix utils)
+             (guix build-system guile)
              (gnu packages autotools)
              (gnu packages guile)
              (gnu packages tls)
@@ -44,52 +46,66 @@
              (gnu packages pkg-config)
              (gnu packages texinfo))
 
-(package
-  (name "guile-gitlab")
-  (version "0.1.0")
-  (source (string-append "./" name "-" version ".tar.gz"))
-  (build-system gnu-build-system)
-  (native-inputs
-   `(("autoconf" ,autoconf)
-     ("automake" ,automake)
-     ("pkg-config" ,pkg-config)
-     ("texinfo" ,texinfo)))
-  (inputs `(("guile"        ,guile-2.2)
-            ("guile-json"   ,guile-json)
-            ("guile-gnutls" ,guile2.2-gnutls)))
-  (propagated-inputs `(("guile-lib" ,guile2.2-lib)))
-  (arguments
-   '(#:phases (modify-phases %standard-phases
-                (add-before 'configure 'set-guilesitedir
-                  (lambda _
-                    (substitute* "Makefile.in"
-                      (("^guilesitedir =.*$")
-                       "guilesitedir = \
+
+
+(define-public guile-gitlab
+  (package
+    (name "guile-gitlab")
+    (version "0.1.0")
+    (source
+     (origin
+       (method git-fetch)
+       (uri (git-reference
+             (url "https://github.com/artyom-poptsov/guile-gitlab.git")
+             (commit (string-append "v" version))))
+       (file-name (string-append name "-" version "-checkout"))
+       (sha256
+        (base32
+         "1vpwwnxxglla8ci9mz6smm3nyqvdz2k082qyrp36ad14v9y70l86"))))
+    (build-system gnu-build-system)
+    (native-inputs
+     `(("autoconf" ,autoconf)
+       ("automake" ,automake)
+       ("pkg-config" ,pkg-config)
+       ("texinfo" ,texinfo)))
+    (inputs `(("guile"        ,guile-2.2)
+              ("guile-json"   ,guile-json)
+              ("guile-gnutls" ,guile2.2-gnutls)))
+    (propagated-inputs `(("guile-lib" ,guile2.2-lib)))
+    (arguments
+     '(#:phases (modify-phases %standard-phases
+                  (add-before 'configure 'set-guilesitedir
+                    (lambda _
+                      (substitute* "Makefile.in"
+                        (("^guilesitedir =.*$")
+                         "guilesitedir = \
 $(datadir)/guile/site/$(GUILE_EFFECTIVE_VERSION)\n"))
-                    (substitute* "modules/Makefile.in"
-                      (("^guilesitedir =.*$")
-                       "guilesitedir = \
+                      (substitute* "modules/Makefile.in"
+                        (("^guilesitedir =.*$")
+                         "guilesitedir = \
 $(datadir)/guile/site/$(GUILE_EFFECTIVE_VERSION)\n"))
-                    (substitute* "modules/gitlab/Makefile.in"
-                      (("^guilesitedir =.*$")
-                       "guilesitedir = \
+                      (substitute* "modules/gitlab/Makefile.in"
+                        (("^guilesitedir =.*$")
+                         "guilesitedir = \
 $(datadir)/guile/site/$(GUILE_EFFECTIVE_VERSION)\n"))
-                    (substitute* "modules/gitlab/api/Makefile.in"
-                                 (("^guilesitedir =.*$")
-                                  "guilesitedir = \
+                      (substitute* "modules/gitlab/api/Makefile.in"
+                        (("^guilesitedir =.*$")
+                         "guilesitedir = \
 $(datadir)/guile/site/$(GUILE_EFFECTIVE_VERSION)\n"))
-                    (substitute* "modules/gitlab/cli/Makefile.in"
-                                 (("^guilesitedir =.*$")
-                                  "guilesitedir = \
+                      (substitute* "modules/gitlab/cli/Makefile.in"
+                        (("^guilesitedir =.*$")
+                         "guilesitedir = \
 $(datadir)/guile/site/$(GUILE_EFFECTIVE_VERSION)\n"))
-                    #t))
-                (add-after 'unpack 'autoreconf
-                  (lambda _
-                    (zero? (system* "autoreconf" "-vfi")))))))
-  (home-page "https://github.com/artyom-poptsov/guile-gitlab")
-  (synopsis "GNU Guile interface to GitLab CE REST API.")
-  (description
-   "GNU Guile interface to GitLab CE REST API.")
-  (license gpl3))
+                      #t))
+                  (add-after 'unpack 'autoreconf
+                    (lambda _
+                      (zero? (system* "autoreconf" "-vfi")))))))
+    (home-page "https://github.com/artyom-poptsov/guile-gitlab")
+    (synopsis "GitLab module for Guile")
+    (description
+     "GNU Guile interface to GitLab Community Edition REST API.")
+    (license license:gpl3)))
+
+guile-gitlab
 
 ;;; guix.scm ends here.
