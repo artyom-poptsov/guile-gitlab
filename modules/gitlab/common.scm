@@ -24,9 +24,11 @@
 ;;; Code:
 
 (define-module (gitlab common)
-  #:export (constructor-argument
-            cons-or-null
-            make-sieved-list))
+  #:use-module (scheme documentation)
+  #:export (define-method-with-docs
+             constructor-argument
+             cons-or-null
+             make-sieved-list))
 
 (define-syntax cons-or-null
   (syntax-rules ()
@@ -45,5 +47,12 @@
 (define (constructor-argument keyword initargs)
   (and (memq keyword initargs)
        (cadr (memq keyword initargs))))
+
+(define-macro-with-docs (define-method-with-docs name-and-args docs . body)
+  "Define a method with documentation."
+  `(begin
+     (define-method ,name-and-args ,@body)
+     (set-object-property! ,(car name-and-args) 'documentation ,docs)
+     *unspecified*))
 
 ;;; common.scm ends here.

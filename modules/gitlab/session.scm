@@ -25,6 +25,7 @@
 ;;; Code:
 
 (define-module (gitlab session)
+  #:use-module (scheme documentation)
   #:use-module (oop goops)
   #:use-module (web uri)
   #:use-module (gitlab common)
@@ -35,7 +36,9 @@
             gitlab-session-debug-mode?))
 
 
-(define-class <session> ()
+(define-class-with-docs <session> ()
+  "This class describes a GitLab API session."
+
   ;; GitLab authentication token.
   ;;
   ;; <string>

@@ -26,6 +26,7 @@
 
 
 (define-module (gitlab client)
+  #:use-module (scheme documentation)
   #:use-module (srfi srfi-8)
   #:use-module (ice-9 iconv)
   #:use-module (oop goops)
@@ -33,6 +34,7 @@
   #:use-module (web uri)
   #:use-module (web response)
   #:use-module (json)
+  #:use-module (gitlab common)
   #:export (<client>
             client?
             client-server-uri
@@ -45,7 +47,10 @@
 
 
 
-(define-class <client> ()
+(define-class-with-docs <client> ()
+  "This class allows to communicate with a GitLab instance through its public
+REST API."
+
   ;; <string>
   (token
    #:init-value   #f
@@ -66,7 +71,8 @@
 
 
 
-(define-method (client? object)
+(define-method-with-docs (client? object)
+  "Check if an OBJECT is a <client> instance."
   (is-a? object <client>))
 
 (define-method (%display (client <client>) (port <port>))
@@ -87,7 +93,8 @@
 
 
 
-(define-method (uri-parameters->string (params <list>))
+(define-method-with-docs (uri-parameters->string (params <list>))
+  "Convert PARAMS list to a URI parameters string."
   (if (null? params)
       ""
       (string-join (map (lambda (p)
@@ -97,9 +104,11 @@
 
 ;; Build an URI based on the CLIENT parameters, a RESOURCE and a QUERY alist.
 ;; Returns the new URI.
-(define-method (client-build-uri (client   <client>)
-                                 (resource <string>)
-                                 (query    <list>))
+(define-method-with-docs (client-build-uri (client   <client>)
+                                           (resource <string>)
+                                           (query    <list>))
+  "Build an URI based on the CLIENT parameters, a RESOURCE and a QUERY alist.
+Returns the new URI."
   (let ((server (client-server-uri client)))
     (build-uri (uri-scheme server)
                #:host   (uri-host server)
