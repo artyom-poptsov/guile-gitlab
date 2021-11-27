@@ -20,7 +20,7 @@
 
 
 
-(define (print-help program-name)
+(define (print-help program-name args)
   (format #t "\
 Usage: ~a <command> [arguments]
 
@@ -44,7 +44,8 @@ Global options that are available for all commands:
   `((("user")          ,gitlab-cli-user)
     (("group")         ,gitlab-cli-group)
     (("project")       ,gitlab-cli-project)
-    (("version")       ,gitlab-cli-version)))
+    (("version")       ,gitlab-cli-version)
+    (("help" "h")      ,print-help)))
 
 
 
@@ -52,7 +53,7 @@ Global options that are available for all commands:
   (let ((program-name (car args)))
 
     (when (< (length args) 2)
-      (print-help program-name)
+      (print-help program-name '())
       (exit 0))
 
     (let* ((command (cadr args))
