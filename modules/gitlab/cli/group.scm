@@ -60,6 +60,12 @@ Options:
       (print-help/list program-name)
       (exit 0))
 
+    (unless server
+      (error "'--server' option must be specified" args))
+
+    (unless token
+      (error "'--token' option must be specified" args))
+
     (let* ((session (make <session>
                       #:endpoint server
                       #:token    token))
