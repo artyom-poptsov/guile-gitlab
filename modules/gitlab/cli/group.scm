@@ -11,9 +11,20 @@
 
 
 
-(define (print-group-help program-name)
+(define (print-help program-name)
   (format #t "\
-Usage: ~a group [arguments]
+Usage: ~a group <sub-command> [arguments]
+
+Sub-commands:
+  list, ls    List projects in various ways.
+  help, h     Print this message.
+"
+          program-name))
+
+(define (print-help/list program-name)
+  (format #t "\
+Usage: ~a group list [arguments]
+       ~a group ls [arguments]
 
 Options:
   --id <id>
@@ -23,18 +34,19 @@ Options:
               user (the owner of the token)
               Allowed values: true, false
 "
+          program-name
           program-name))
 
 
 
 (define %group-option-spec
   '((help   (single-char #\h) (value #f))
-    (server (single-char #\s) (value #t) (required? #t))
-    (token  (single-char #\t) (value #t) (required? #t))
+    (server (single-char #\s) (value #t))
+    (token  (single-char #\t) (value #t))
     (id                       (value #t))
     (owned?                   (value #t))))
 
-(define (gitlab-cli-group program-name args)
+(define (gitlab-cli-group/list program-name args)
   (let* ((options (getopt-long (cons program-name args) %group-option-spec))
          (help-needed? (option-ref options 'help      #f))
          ;; Required parameters.
@@ -45,7 +57,7 @@ Options:
          (owned?       (option-ref options 'owned?    'undefined)))
 
     (when (or help-needed? (< (length args) 2))
-      (print-group-help program-name)
+      (print-help/list program-name)
       (exit 0))
 
     (let* ((session (make <session>
@@ -60,5 +72,22 @@ Options:
           (print result #f)
           (pretty-print result))
       (newline))))
+
+
+(define %commands
+  `((("list" "ls")        ,gitlab-cli-group/list)
+    (("help" "h")         ,(lambda (program-name args)
+                             (print-help program-name)
+                             (exit 0)))))
+
+(define (gitlab-cli-group program-name args)
+  (when (zero? (length args))
+    (print-help program-name)
+    (exit 0))
+  (let* ((sub-command (car args))
+         (handler     (command-match sub-command %commands)))
+    (if handler
+        (handler program-name (cdr args))
+        (print-help program-name))))
 
 ;;; group.scm ends here.
