@@ -7,6 +7,12 @@ Copyright (C) Artyom V. Poptsov <poptsov.artyom@gmail.com>
   are permitted in any medium without royalty provided the copyright
   notice and this notice are preserved.
 
+* Version 0.2.0 (2021-11-27)
+** Add Guile 3.0 support
+** Guile-GitLab now uses Guile-Library
+** Implement "list" sub-commands
+** Improve Autotools scripts
+** Add tests
 * Version 0.1.0 (2021-11-13)
     The first release of Guile-GitLab.
 
