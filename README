@@ -1,9 +1,10 @@
 # -*- mode: org; -*-
 * Guile-GitLab
-  GNU Guile interface to GitLab CE REST API.
+  GNU Guile interface to [[https://gitlab.com/][GitLab]] CE REST API.
 
 ** Requirements
-   - [[https://www.gnu.org/software/guile/][GNU Guile]] 2.2
+   - [[https://www.gnu.org/software/guile/][GNU Guile]] 2.2+ (on Ubuntu GNU/Linux you need Guile 2.2 because Guile-JSON
+     is available only for Guile 2.2.)
    - [[https://github.com/aconchillo/guile-json][Guile-JSON]]
    - [[https://gnutls.org/][GnuTLS]]
    - [[https://www.gnutls.org/manual/gnutls-guile.html][Guile-GnuTLS]]
@@ -94,7 +95,7 @@ $ gitlab-cli user remove \
 **** =group=
      Prints the list of groups to standard output by default.
 #+BEGIN_EXAMPLE shell
-$ gitlab-cli group \
+$ gitlab-cli group list \
         --token "your-secret-gitlab-token" \
         --server "https://gitlab.example.org"
         <other-options>
