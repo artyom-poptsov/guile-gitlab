@@ -21,7 +21,7 @@ You should have received a copy of the GNU General Public License
 along with Guile-GitLab.  If not, see <http://www.gnu.org/licenses/>.
 ]])
 
-AC_INIT([Guile-GitLab], [0.2.0], [poptsov.artyom@gmail.com],
+AC_INIT([Guile-GitLab], [0.2.1], [poptsov.artyom@gmail.com],
                      [guile-gitlab],
                      [https://github.com/artyom-poptsov/guile-gitlab])
 

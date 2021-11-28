@@ -7,6 +7,12 @@ Copyright (C) Artyom V. Poptsov <poptsov.artyom@gmail.com>
   are permitted in any medium without royalty provided the copyright
   notice and this notice are preserved.
 
+* Version 0.2.1 (2021-11-28)
+** Bugfix in "gitlab-cli"
+   "command-match" procedure from (gitlab cli common) would fail if no
+   suitable command found. Now the procedure returns #f in that case.
+   "gitlab-cli" command in turn now prints the help message if an unknown
+   command is passed to it.
 * Version 0.2.0 (2021-11-27)
 ** Add Guile 3.0 support
 ** Guile-GitLab now uses Guile-Library
