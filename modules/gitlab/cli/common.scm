@@ -149,8 +149,12 @@
     (string-any=? str (cdr string-list)))))
 
 (define (command-match command command-list)
-  (if (string-any=? command (caar command-list))
-      (cadar command-list)
-      (command-match command (cdr command-list))))
+  "Match a COMMAND with a COMMAND-LIST.  Return the matched command or #f if no
+command found."
+  (if (null? command-list)
+      #f
+      (if (string-any=? command (caar command-list))
+          (cadar command-list)
+          (command-match command (cdr command-list)))))
 
 ;;; common.scm ends here.
